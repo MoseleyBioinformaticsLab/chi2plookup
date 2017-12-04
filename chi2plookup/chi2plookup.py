@@ -32,24 +32,6 @@ struct Chi2PLookup
 """
 
 
-TESTFILE_TEMPLATE = """#include <iostream>
-#include "Chi2PLookup.h"
-
-int main() {{
-    
-    Chi2PLookup chi2_plookup_table;
-    double x = {0};
-    int df = {1};
-    double outvalue;
-
-    outvalue = chi2_plookup_table.getPValue(x, df);
-    std::cout << "Estimated value: " << outvalue << "\\n";
-
-    return 0;
-}}
-"""
-
-
 def max_chi_value(df=1, start_chi=25):
     """Determine maximum chi2 value statistic that can be used 
     for a given degree of freedom. See chi2 distribution graph 
@@ -127,25 +109,3 @@ def generate_headerfile(template, n_division=10000, df=6, start_chi=25, filepath
         outfile.write(template)
 
     return template
-
-
-def test_headerfile(template, testvalue=1, df=1, srcfpath="test.cpp", binfpath="test.out"):
-    """Test generated header file within cpp source file.
-
-    :param str template: Template file that contains main() function and imports header file.
-    :param testvalue: Chi value.
-    :param int df: Degree of freedom.
-    :param str srcfpath: Path where source file will be saved.
-    :param str binfpath: Path where binary file will be saved.
-    :return: None
-    :rtype: None
-    """
-    p_value = 1 - chi2.cdf(testvalue, df)
-    print("Actual value:", p_value)
-
-    template = template.format(testvalue, df)
-    with open(srcfpath, "w") as outfile:
-        outfile.write(template)
-
-    os.system("g++ -std=c++11 {} -o {}".format(srcfpath, binfpath))
-    os.system("./{}".format(binfpath))
