@@ -1,15 +1,16 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
+from __future__  import print_function, division
 import os
 from scipy.stats import chi2
 
 
-HEADERFILE_TEMPLATE = """#ifndef CHI2PVALUES_H
-#define CHI2PVALUES_H
+HEADERFILE_TEMPLATE = """#ifndef CHI2PLOOKUP_H
+#define CHI2PLOOKUP_H
 
 
-struct Chi2PValues
+struct Chi2PLookup
 {{
     static const double * pValues[];
     static const int cutoff[];
@@ -27,15 +28,16 @@ struct Chi2PValues
 {2}
 {3}
 
-#endif // CHI2PVALUES_H
+#endif // CHI2PLOOKUP_H
 """
 
+
 TESTFILE_TEMPLATE = """#include <iostream>
-#include "Chi2PValues.h"
+#include "Chi2PLookup.h"
 
 int main() {{
     
-    Chi2PValues chi2_plookup_table;
+    Chi2PLookup chi2_plookup_table;
     double x = {0};
     int df = {1};
     double outvalue;
@@ -49,10 +51,14 @@ int main() {{
 
 
 def max_chi_value(df=1, start_chi=25):
-    """Determine maximum chi2 value statistic for a given degree of freedom.
+    """Determine maximum chi2 value statistic that can be used 
+    for a given degree of freedom. See chi2 distribution graph 
+    that shifts as the number of degrees of freedom increases
+    and why we need to adjust max_chi parameter 
+    (https://en.wikipedia.org/wiki/Chi-squared_distribution)
 
     :param int df: Degree of freedom.
-    :param int start_chi: Maximum chi2 value for given degree of freedom.
+    :param int start_chi: Maximum chi2 value for a given degree of freedom.
     :return: Maximum chi value statistic for a given degree of freedom.
     :rtype: int
     """
@@ -70,19 +76,19 @@ def max_chi_value(df=1, start_chi=25):
     return max_chi
 
 
-def generate_headerfile(template, n_division=10000, df=6, start_chi=25, filepath="Chi2PValues.h", verbose=True):
+def generate_headerfile(template, n_division=10000, df=6, start_chi=25, filepath="Chi2PLookup.h", verbose=False):
     """Generate C++ header file that contain pre-generated array of arrays of p-values for specified
     degrees of freedom.
 
     :param str template: Header file template.
     :param int n_division: Precision.
-    :param tuple df: Degrees of freedom.
+    :param int df: Degrees of freedom.
     :param int start_chi: Maximum chi value for degree of freedom = 1.
     :param str filepath: Path where header file will be saved.
-    :return: None
-    :rtype: None
+    :return: String containing 
+    :rtype: :py:class:`str`
     """
-    divisor = "const int Chi2PValues::divisor = {};".format(n_division)
+    divisor = "const int Chi2PLookup::divisor = {};".format(n_division)
 
     names = []
     cutoff = []
@@ -91,6 +97,8 @@ def generate_headerfile(template, n_division=10000, df=6, start_chi=25, filepath
 
     if verbose:
         print("Generating p-value arrays...")
+        print("n_division={}".format(n_division))
+        print("df={}".format(df))
 
     for df in degrees_of_freedom:
         var_name = "pValues_{}".format(df)
@@ -103,12 +111,12 @@ def generate_headerfile(template, n_division=10000, df=6, start_chi=25, filepath
         p_values = (str(1 - chi2.cdf(val, df)) for val in chi_values)
 
         if verbose:
-            print("    Adding p-values array to template for degree of freedom = {} ...".format(df))
+            print("\tAdding p-values array to template for degree of freedom = {} ...".format(df))
 
         p_values_arrays.append("double {}[] = {{{}}};".format(var_name, ", ".join(p_values)))
 
-    cutoff_array = "const int Chi2PValues::cutoff[] = {{{}}};".format(", ".join([str(i) for i in cutoff]))
-    p_values_array_of_arrays = "const double * Chi2PValues::pValues[] = {{{}}};\n".format(", ".join(names))
+    cutoff_array = "const int Chi2PLookup::cutoff[] = {{{}}};".format(", ".join([str(i) for i in cutoff]))
+    p_values_array_of_arrays = "const double * Chi2PLookup::pValues[] = {{{}}};\n".format(", ".join(names))
 
     template = template.format(divisor, cutoff_array, "\n".join(p_values_arrays), p_values_array_of_arrays)
 
@@ -118,9 +126,11 @@ def generate_headerfile(template, n_division=10000, df=6, start_chi=25, filepath
     with open(filepath, "w") as outfile:
         outfile.write(template)
 
+    return template
+
 
 def test_headerfile(template, testvalue=1, df=1, srcfpath="test.cpp", binfpath="test.out"):
-    """Test generated header file.
+    """Test generated header file within cpp source file.
 
     :param str template: Template file that contains main() function and imports header file.
     :param testvalue: Chi value.
