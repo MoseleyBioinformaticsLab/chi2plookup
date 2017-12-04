@@ -1,6 +1,6 @@
 """
 The `chi2plookup` package provides a simple interface for creating
-C++ header file that contains pregenerated array of p-values for 
+C++ header file that contains pregenerated array(s) of p-values for 
 chi2 distribution for varying degrees of freedom.
 """
 

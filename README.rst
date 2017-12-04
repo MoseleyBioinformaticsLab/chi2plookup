@@ -2,8 +2,9 @@ chi2plookup
 ===========
 
 The `chi2plookup` package provides a simple interface for creating
-C++ header file that contains pregenerated array(s) of p-values for chi-square
-distribution for varying degrees of freedom.
+C++ header file for use in C++ projects. This header file contains
+pregenerated array(s) of p-values for chi-square distribution for
+specified degrees of freedom.
 
 Why?
 ====
