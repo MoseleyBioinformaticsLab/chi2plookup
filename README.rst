@@ -17,8 +17,8 @@ and bypass third-party dependencies:
 
 Inspired by:
 
-   * https://stackoverflow.com/questions/795972/chi-squared-probability-function-in-c
    * http://rmflight.github.io/posts/2013/10/precalcLookup.html
+   * https://stackoverflow.com/questions/795972/chi-squared-probability-function-in-c
 
 .. _boost: http://www.boost.org/doc/libs/1_65_1/libs/math/doc/html/math_toolkit/dist_ref/dists/chi_squared_dist.html
 .. _gsl: http://www.gnu.org/software/gsl/doc/html/randist.html?highlight=chi#the-chi-squared-distribution
