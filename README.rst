@@ -1,6 +1,10 @@
 chi2plookup
 ===========
 
+.. image:: https://travis-ci.org/MoseleyBioinformaticsLab/chi2plookup.svg?branch=master
+    :target: https://travis-ci.org/MoseleyBioinformaticsLab/chi2plookup
+
+
 The `chi2plookup` package provides a simple interface for creating
 C++ header file for use in C++ projects. This header file contains
 pregenerated array(s) of p-values for chi-square distribution for
