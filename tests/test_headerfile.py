@@ -25,8 +25,8 @@ int main() {{
 
 
 def test_headerfile(template=TESTFILE_TEMPLATE, testvalue=1,
-                    df=1, precision=100, start_chi=25, headerfile="tests/Chi2PLookup.h",
-                    srcfpath="test.cpp", binfpath="test.out"):
+                    df=1, precision=10000, start_chi=25, headerfile="tests/Chi2PLookup.h",
+                    srcfpath="tests/test.cpp", binfpath="tests/test.out"):
     """Test generated header file within cpp source file.
 
     :param str template: Template file that contains main() function and imports header file.
@@ -46,7 +46,7 @@ def test_headerfile(template=TESTFILE_TEMPLATE, testvalue=1,
         outfile.write(template)
 
     subprocess.call("g++ -std=c++11 {} -o {}".format(srcfpath, binfpath), shell=True)
-    generated_p_value = subprocess.check_output("./{}".format(binfpath), shell=True)
+    generated_p_value = subprocess.check_output("./{}".format(binfpath))
 
     assert round(float(p_value), 6) == round(float(generated_p_value.strip()), 6)
 
