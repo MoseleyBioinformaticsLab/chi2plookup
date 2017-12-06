@@ -89,5 +89,10 @@ Usage example
    }
 
 
+.. note:: Use the following approach for smaller number of degrees of freedom
+          to avoid generating huge header files (e.g. header file with 6 degrees
+          of freedom ~34 MB).
+
+
 .. _boost: http://www.boost.org/doc/libs/1_65_1/libs/math/doc/html/math_toolkit/dist_ref/dists/chi_squared_dist.html
 .. _gsl: http://www.gnu.org/software/gsl/doc/html/randist.html?highlight=chi#the-chi-squared-distribution
