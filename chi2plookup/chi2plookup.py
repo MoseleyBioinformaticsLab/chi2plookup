@@ -79,8 +79,8 @@ def generate_headerfile(template, n_division=10000, df=6, start_chi=25, filepath
 
     if verbose:
         print("Generating p-value arrays...")
-        print("n_division={}".format(n_division))
-        print("df={}".format(df))
+        print("  df={}".format(df))
+        print("  precision={}".format(n_division))
 
     for df in degrees_of_freedom:
         var_name = "pValues_{}".format(df)
