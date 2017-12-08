@@ -11,12 +11,12 @@ TESTFILE_TEMPLATE = """#include <iostream>
 
 int main() {{
 
-    Chi2PLookup chi2_plookup_table;
+    Chi2PLookup Chi2PLookupTable;
     double x = {0};
     int df = {1};
     double outvalue;
 
-    outvalue = chi2_plookup_table.getPValue(x, df);
+    outvalue = Chi2PLookupTable.getPValue(x, df);
     std::cout << outvalue << "\\n";
 
     return 0;
@@ -24,7 +24,7 @@ int main() {{
 """
 
 
-def test_headerfile(template=TESTFILE_TEMPLATE, testvalue=1,
+def test_headerfile(template=TESTFILE_TEMPLATE, testvalue=1.1,
                     df=1, precision=10000, start_chi=25, headerfile="tests/Chi2PLookup.h",
                     srcfpath="tests/test.cpp", binfpath="tests/test.out"):
     """Test generated header file within cpp source file.
@@ -49,4 +49,3 @@ def test_headerfile(template=TESTFILE_TEMPLATE, testvalue=1,
     generated_p_value = subprocess.check_output("./{}".format(binfpath))
 
     assert round(float(p_value), 6) == round(float(generated_p_value.strip()), 6)
-
