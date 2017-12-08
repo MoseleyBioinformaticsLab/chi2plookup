@@ -77,12 +77,12 @@ Usage example
 
    int main() {
 
-       Chi2PLookup chi2_plookup_table;
+       Chi2PLookup Chi2PLookupTable;
        double x = 1;
        int df = 1;
        double outvalue;
 
-       outvalue = chi2_plookup_table.getPValue(x, df);
+       outvalue = Chi2PLookupTable.getPValue(x, df);
        std::cout << outvalue << "\n";
 
        return 0;
