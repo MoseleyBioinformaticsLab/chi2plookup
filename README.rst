@@ -29,7 +29,7 @@ Usage example
 
 1. To view command-line help message:
 
-.. code:: bash
+.. code-block:: none
 
    $ python3 -m chi2plookup --help
 
@@ -53,9 +53,9 @@ Usage example
 2. Generate a header file with p-values for necessary degrees of freedom (we are using default
    number degrees of freedom, precision, and header file path):
 
-.. code:: bash
+.. code-block:: none
 
-   python3 -m chi2plookup generate --verbose
+   $ python3 -m chi2plookup generate --verbose
 
    Generating p-value arrays...
      df=6
@@ -70,7 +70,7 @@ Usage example
 
 3. Use generated file within your C++ project.
 
-.. code:: c++
+.. code-block:: c++
 
    #include <iostream>
    #include "Chi2PLookup.h"
